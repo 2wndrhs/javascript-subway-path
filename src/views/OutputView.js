@@ -1,18 +1,29 @@
 const { Console } = require('@woowacourse/mission-utils');
 
-const { MAIN } = require('../utils/constants');
+const {
+  MAIN,
+  PATH,
+  MAIN_MESSAGE,
+  PATH_MESSAGE,
+} = require('../utils/constants');
 
 const MESSAGE = Object.freeze({
   MAIN: '## 메인 화면',
-  [MAIN.PATH]: '경로 조회',
-  [MAIN.QUIT]: '종료',
+  PATH: '## 경로 기준',
 });
 
 const OutputView = {
   printMainFeatures() {
     Console.print(MESSAGE.MAIN);
-    Console.print(`${MAIN.PATH}. ${MESSAGE[MAIN.PATH]}`);
-    Console.print(`${MAIN.QUIT}. ${MESSAGE[MAIN.QUIT]}`);
+    Console.print(`${MAIN.PATH}. ${MAIN_MESSAGE[MAIN.PATH]}`);
+    Console.print(`${MAIN.QUIT}. ${MAIN_MESSAGE[MAIN.QUIT]}`);
+  },
+
+  printPathFeatures() {
+    Console.print(`\n${MESSAGE.PATH}`);
+    Console.print(`${PATH.DISTANCE}. ${PATH_MESSAGE[PATH.DISTANCE]}`);
+    Console.print(`${PATH.TIME}. ${PATH_MESSAGE[PATH.TIME]}`);
+    Console.print(`${PATH.BACK}. ${PATH_MESSAGE[PATH.BACK]}`);
   },
 };
 
