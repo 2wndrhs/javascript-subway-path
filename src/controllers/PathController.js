@@ -32,7 +32,15 @@ class PathController {
     InputView.readDepartureStation(this.#onInputDepartureStation.bind(this));
   }
 
-  #onInputDepartureStation(station) {}
+  #onInputDepartureStation(station) {
+    this.#inputArrivalStation();
+  }
+
+  #inputArrivalStation() {
+    InputView.readArrivalStation(this.#onInputArrivalStation.bind(this));
+  }
+
+  #onInputArrivalStation(station) {}
 }
 
 module.exports = PathController;
