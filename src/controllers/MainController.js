@@ -11,8 +11,8 @@ class MainController {
   #pathConroller = new PathController();
 
   #featureHandlers = Object.freeze({
-    [MAIN.PATH]: this.#startPathConroller.bind(this),
-    [MAIN.QUIT]: this.#quit.bind(this),
+    [MAIN.PATH]: this.#onInputPath.bind(this),
+    [MAIN.QUIT]: this.#onInputQuit.bind(this),
   });
 
   start() {
@@ -29,11 +29,11 @@ class MainController {
     this.#featureHandlers[feature]();
   }
 
-  #startPathConroller() {
+  #onInputPath() {
     this.#pathConroller.start();
   }
 
-  #quit() {
+  #onInputQuit() {
     Console.close();
   }
 }
