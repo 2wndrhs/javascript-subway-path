@@ -1,5 +1,5 @@
 /* eslint-disable max-lines-per-function */
-module.exports = function Dijkstra() {
+function Dijkstra() {
   const Node = {
     init(val, priority) {
       this.val = val;
@@ -217,4 +217,6 @@ module.exports = function Dijkstra() {
   };
 
   WeightedGraph.init();
-};
+}
+
+module.exports = Dijkstra;
