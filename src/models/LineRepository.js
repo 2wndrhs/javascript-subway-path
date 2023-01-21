@@ -1,12 +1,22 @@
 class LineRepository {
   #lines = [];
 
-  addLine(station) {
-    this.#lines.push(station);
+  getLines() {
+    return this.#lines;
   }
 
-  getStations() {
+  addLine(line) {
+    this.#lines.push(line);
+  }
+
+  deleteLine(lineName) {
+    this.#lines = this.#lines.filter((line) => line.getName() !== lineName);
+
     return this.#lines;
+  }
+
+  deleteAll() {
+    this.#lines = [];
   }
 }
 

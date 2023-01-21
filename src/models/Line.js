@@ -1,8 +1,11 @@
 class Line {
   #name;
 
-  constructor(name) {
+  #stations;
+
+  constructor(name, stations) {
     this.#name = name;
+    this.#stations = stations;
   }
 
   getName() {

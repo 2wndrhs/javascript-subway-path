@@ -1,7 +1,7 @@
 const StationRepository = require('../models/StationRepository');
 const LineRepository = require('../models/LineRepository');
-const Station = require('../models/Station');
-const Line = require('../models/Line');
+const SectionRepository = require('../models/SectionRepository');
+const DataInitializer = require('../models/DataInitializer');
 
 const InputView = require('../views/InputView');
 const OutputView = require('../views/OutputView');
@@ -9,9 +9,11 @@ const OutputView = require('../views/OutputView');
 const { PATH } = require('../utils/constants');
 
 class PathController {
-  #stationRepository = new StationRepository();
-
-  #lineRepository = new LineRepository();
+  #repository = Object.freeze({
+    stationRepository: new StationRepository(),
+    lineRepository: new LineRepository(),
+    sectionRepository: new SectionRepository(),
+  });
 
   #featureHandlers = Object.freeze({
     [PATH.DISTANCE]: this.#onInputDistance.bind(this),
@@ -20,6 +22,8 @@ class PathController {
   });
 
   start() {
+    DataInitializer.init(this.#repository);
+
     OutputView.printPathFeatures();
 
     this.#inputPathFeature();
@@ -42,12 +46,6 @@ class PathController {
   }
 
   #onInputDepartureStation(stationName) {
-    const station = new Station(stationName);
-    const lines = station.getStationLines();
-
-    this.#stationRepository.addStation(station);
-    lines.forEach((line) => this.#lineRepository.addLine(new Line(line)));
-
     this.#inputArrivalStation();
   }
 
@@ -55,13 +53,7 @@ class PathController {
     InputView.readArrivalStation(this.#onInputArrivalStation.bind(this));
   }
 
-  #onInputArrivalStation(stationName) {
-    const station = new Station(stationName);
-    const lines = station.getStationLines();
-
-    this.#stationRepository.addStation(station);
-    lines.forEach((line) => this.#lineRepository.addLine(new Line(line)));
-  }
+  #onInputArrivalStation(stationName) {}
 }
 
 module.exports = PathController;
