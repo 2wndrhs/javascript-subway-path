@@ -37,17 +37,14 @@ function Dijkstra() {
     },
 
     dequeue() {
-      if (this.values.length === 0) {
+      if (this.values.length == 0) {
         return;
       }
-
       const dequeued = this.values.shift();
       const lastItem = this.values.pop();
-
       if (!lastItem) {
         return dequeued;
       }
-
       this.values.unshift(lastItem);
 
       let idxOfTarget = 0;
@@ -60,8 +57,8 @@ function Dijkstra() {
 
         function swap(direction) {
           const idxOfChild =
-            direction === 'left' ? idxOfLeftChild : idxOfRightChild;
-          const child = direction === 'left' ? leftChild : rightChild;
+            direction == 'left' ? idxOfLeftChild : idxOfRightChild;
+          const child = direction == 'left' ? leftChild : rightChild;
           this.values[idxOfChild] = this.values[idxOfTarget];
           this.values[idxOfTarget] = child;
           idxOfTarget = idxOfChild;
@@ -137,7 +134,6 @@ function Dijkstra() {
           return `There's no edge between ${v1} and ${v2}`;
         }
         delete this.adjacencyList[v1][v2];
-
         if (Object.keys(this.adjacencyList[v1]).length == 0) {
           delete this.adjacencyList[v1];
         }
@@ -153,7 +149,6 @@ function Dijkstra() {
       if (!this.adjacencyList.hasOwnProperty(vertex)) {
         return `There's no ${vertex}`;
       }
-
       const edges = this.adjacencyList[vertex];
       for (const key in edges) {
         this.removeEdge(key, vertex);
@@ -185,7 +180,7 @@ function Dijkstra() {
           return;
         }
         current = current.val;
-        if (current === end) {
+        if (current == end) {
           break;
         }
         const neighbors = hashOfVertex[current];
@@ -208,6 +203,7 @@ function Dijkstra() {
       let node = end;
 
       const route = [];
+
       while (node) {
         route.unshift(node);
         node = previous[node];

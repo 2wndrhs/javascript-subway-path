@@ -1,7 +1,4 @@
-const StationRepository = require('../models/StationRepository');
-const LineRepository = require('../models/LineRepository');
-const SectionRepository = require('../models/SectionRepository');
-const DataInitializer = require('../models/DataInitializer');
+const PathFinder = require('../models/PathFinder');
 
 const InputView = require('../views/InputView');
 const OutputView = require('../views/OutputView');
@@ -9,11 +6,7 @@ const OutputView = require('../views/OutputView');
 const { PATH } = require('../utils/constants');
 
 class PathController {
-  #repository = Object.freeze({
-    stationRepository: new StationRepository(),
-    lineRepository: new LineRepository(),
-    sectionRepository: new SectionRepository(),
-  });
+  #pathFinder = new PathFinder();
 
   #featureHandlers = Object.freeze({
     [PATH.DISTANCE]: this.#onInputDistance.bind(this),
@@ -22,8 +15,6 @@ class PathController {
   });
 
   start() {
-    DataInitializer.init(this.#repository);
-
     OutputView.printPathFeatures();
 
     this.#inputPathFeature();
@@ -45,7 +36,9 @@ class PathController {
     InputView.readDepartureStation(this.#onInputDepartureStation.bind(this));
   }
 
-  #onInputDepartureStation(stationName) {
+  #onInputDepartureStation(station) {
+    this.#pathFinder.setDeparture(station);
+
     this.#inputArrivalStation();
   }
 
@@ -53,7 +46,16 @@ class PathController {
     InputView.readArrivalStation(this.#onInputArrivalStation.bind(this));
   }
 
-  #onInputArrivalStation(stationName) {}
+  #onInputArrivalStation(station) {
+    this.#pathFinder.setArrival(station);
+
+    this.#findShortestPath();
+  }
+
+  #findShortestPath() {
+    const path = this.#pathFinder.find(PATH.DISTANCE);
+    console.log(path);
+  }
 }
 
 module.exports = PathController;
