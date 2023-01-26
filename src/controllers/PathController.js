@@ -6,11 +6,11 @@ const OutputView = require('../views/OutputView');
 const { PATH } = require('../utils/constants');
 
 class PathController {
-  #pathFinder = new PathFinder();
+  #pathFinder;
 
   #featureHandlers = Object.freeze({
     [PATH.DISTANCE]: this.#onInputDistance.bind(this),
-    [PATH.TIME]: '',
+    [PATH.TIME]: this.#onInputTime.bind(this),
     [PATH.BACK]: '',
   });
 
@@ -29,6 +29,14 @@ class PathController {
   }
 
   #onInputDistance() {
+    this.#pathFinder = new PathFinder(PATH.DISTANCE);
+
+    this.#inputDepartureStation();
+  }
+
+  #onInputTime() {
+    this.#pathFinder = new PathFinder(PATH.TIME);
+
     this.#inputDepartureStation();
   }
 
