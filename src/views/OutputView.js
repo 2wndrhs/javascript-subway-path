@@ -21,7 +21,7 @@ const PREFIX = Object.freeze({
 
 const OutputView = {
   printMainFeatures() {
-    Console.print(MESSAGE.MAIN);
+    Console.print(`\n${MESSAGE.MAIN}`);
     Console.print(`${MAIN.PATH}. ${MAIN_MESSAGE[MAIN.PATH]}`);
     Console.print(`${MAIN.QUIT}. ${MAIN_MESSAGE[MAIN.QUIT]}`);
   },

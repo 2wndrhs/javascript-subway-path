@@ -1,18 +1,24 @@
 const { Console } = require('@woowacourse/mission-utils');
 
-const PathController = require('./PathController');
+const PathFinder = require('../models/PathFinder');
 
 const InputView = require('../views/InputView');
 const OutputView = require('../views/OutputView');
 
-const { MAIN } = require('../utils/constants');
+const { MAIN, PATH } = require('../utils/constants');
 
 class MainController {
-  #pathConroller = new PathController();
+  #pathFinder;
 
-  #featureHandlers = Object.freeze({
+  #mainFeaturesHandler = Object.freeze({
     [MAIN.PATH]: this.#onInputPath.bind(this),
     [MAIN.QUIT]: this.#onInputQuit.bind(this),
+  });
+
+  #pathFeaturesHandler = Object.freeze({
+    [PATH.DISTANCE]: this.#onInputDistance.bind(this),
+    [PATH.TIME]: this.#onInputTime.bind(this),
+    [PATH.BACK]: this.#onInputBack.bind(this),
   });
 
   start() {
@@ -26,15 +32,69 @@ class MainController {
   }
 
   #onInputMainFeature(feature) {
-    this.#featureHandlers[feature]();
+    this.#mainFeaturesHandler[feature]();
   }
 
   #onInputPath() {
-    this.#pathConroller.start();
+    OutputView.printPathFeatures();
+
+    this.#inputPathFeature();
   }
 
   #onInputQuit() {
     Console.close();
+  }
+
+  #inputPathFeature() {
+    InputView.readFeature(this.#onInputPathFeature.bind(this));
+  }
+
+  #onInputPathFeature(feature) {
+    this.#pathFeaturesHandler[feature]();
+  }
+
+  #onInputDistance() {
+    this.#pathFinder = new PathFinder(PATH.DISTANCE);
+
+    this.#inputDepartureStation();
+  }
+
+  #onInputTime() {
+    this.#pathFinder = new PathFinder(PATH.TIME);
+
+    this.#inputDepartureStation();
+  }
+
+  #onInputBack() {
+    this.start();
+  }
+
+  #inputDepartureStation() {
+    InputView.readDepartureStation(this.#onInputDepartureStation.bind(this));
+  }
+
+  #onInputDepartureStation(station) {
+    this.#pathFinder.setDeparture(station);
+
+    this.#inputArrivalStation();
+  }
+
+  #inputArrivalStation() {
+    InputView.readArrivalStation(this.#onInputArrivalStation.bind(this));
+  }
+
+  #onInputArrivalStation(station) {
+    this.#pathFinder.setArrival(station);
+
+    this.#findShortestPath();
+  }
+
+  #findShortestPath() {
+    const result = this.#pathFinder.find();
+
+    OutputView.printPathResult(result);
+
+    this.start();
   }
 }
 
