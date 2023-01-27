@@ -61,8 +61,8 @@ class PathController {
   }
 
   #findShortestPath() {
-    const path = this.#pathFinder.find(PATH.DISTANCE);
-    console.log(path);
+    const { path, totalDistance, totalTime } = this.#pathFinder.find();
+    console.log(path, totalDistance, totalTime);
   }
 }
 
