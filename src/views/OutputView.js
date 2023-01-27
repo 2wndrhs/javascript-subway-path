@@ -10,6 +10,13 @@ const {
 const MESSAGE = Object.freeze({
   MAIN: '## 메인 화면',
   PATH: '## 경로 기준',
+  RESULT: '## 조회 결과',
+  TOTAL_DISTANCE: '총 거리',
+  TOTAL_TIME: '총 시간',
+});
+
+const PREFIX = Object.freeze({
+  RESULT: '[INFO]',
 });
 
 const OutputView = {
@@ -24,6 +31,17 @@ const OutputView = {
     Console.print(`${PATH.DISTANCE}. ${PATH_MESSAGE[PATH.DISTANCE]}`);
     Console.print(`${PATH.TIME}. ${PATH_MESSAGE[PATH.TIME]}`);
     Console.print(`${PATH.BACK}. ${PATH_MESSAGE[PATH.BACK]}`);
+  },
+
+  printPathResult({ path, totalDistance, totalTime }) {
+    Console.print(`\n${MESSAGE.RESULT}`);
+    Console.print(`${PREFIX.RESULT} ---`);
+    Console.print(
+      `${PREFIX.RESULT} ${MESSAGE.TOTAL_DISTANCE}: ${totalDistance}km`,
+    );
+    Console.print(`${PREFIX.RESULT} ${MESSAGE.TOTAL_TIME}: ${totalTime}분`);
+    Console.print(`${PREFIX.RESULT} ---`);
+    path.forEach((station) => Console.print(`${PREFIX.RESULT} ${station}`));
   },
 };
 
